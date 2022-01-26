@@ -19,12 +19,12 @@ export class Maze {
 	cells:Cell[][] = new Array();
 
 	/**
-	 * @param canvas canvas on which maze draws
-	 * @param colorCell color of cell of the maze
-	 * @param row number of rows in maze
-	 * @param column number of columbs in maze
-	 * @param w length/width of each row
-	 * @param h optional? lenght/width of each column
+	 * @param canvas canvas on which maze draws.
+	 * @param colorCell color of cell of the maze.
+	 * @param row number of rows in maze.
+	 * @param column number of columbs in maze.
+	 * @param w width of each Cell.
+	 * @param h height of each Cell.
 	 */
 	constructor (canvas:HTMLCanvasElement, colorCell:string, row:number, column:number , w:number, h?:number) {
 		this.canvas = canvas;
@@ -48,16 +48,14 @@ export class Maze {
 		// this.mapNeighborCells();
 	}
 
+	/**
+	 * x and y are the coordinates of top-left point of each Cells.
+	 * x will denote horizontal axis value,
+	 * y will be denoted ans vertical axis value
+	 * but coordinate will in form of (x,y) for canvas despite
+	 * 
+	 */
 	generateCells():void {
-
-		/**
-		 * 
-		 * x and y are the coordinates of top-left point of each Cells.
-		 * x will denote horizontal axis value,
-		 * y will be denoted ans vertical axis value
-		 * but coordinate will in form of (x,y) for canvas despite
-		 * 
-		 */
 		for (let r:number=0; r < this.row; r++) {
 			this.cells[r] = new Array();
 			for (let c:number=0; c < this.column; c++) {
@@ -71,12 +69,10 @@ export class Maze {
 		for (let r=0; r < this.row; r++) {
 			for (let c=0; c < this.column; c++) {
 				let cell:Cell = this.cells[r][c];
-				console.log("cell " + r + " " + c);
 
 				// if top neighbor exist
 				if (r-1 >= 0) {
 					cell.neighbors.push(this.cells[r-1][c]);
-					
 				}
 				//if bottom neighbor exist
 				if (r+1 < this.row) {
@@ -97,10 +93,15 @@ export class Maze {
 
 	}
 
+	/**
+	 * draw the whole maze
+	 * @param ctx canvas context in which we want to draw
+	 */
 	drawMaze(ctx:CanvasRenderingContext2D):void {
+		// Erase the canvas before drawing anything on it.
 		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-		this.cells.forEach((r:Cell[]) => {
-			r.forEach((cell) => {
+		this.cells.forEach((rowCells:Cell[]) => {
+			rowCells.forEach((cell) => {
 				this.drawCell(cell, ctx);
 			});
 		});
@@ -139,6 +140,11 @@ export class Maze {
 
 	}
 
+	/**
+	 * 
+	 * mark a cell by drawing a small rect in it.
+	 * 
+	 */
 	markCell(cell:Cell, ctx:CanvasRenderingContext2D, isCurrentCell:boolean = false):void {
 		let x = cell.x * cell.w;
 		let y = cell.y * cell.h;
@@ -162,6 +168,9 @@ export class Maze {
 		// }
 	}
 
+	/**
+	 * Maze generating algorithm
+	 */
 	async createMaze() {
 
 		let ctx = this.canvas.getContext('2d')!;
@@ -214,7 +223,7 @@ export class Maze {
 	}
 
 	/**
-	 * 
+	 * get all the neibhors around the cell.
 	 * @param cell cell which neighbors we want.
 	 * @returns Cell[]
 	 */
