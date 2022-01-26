@@ -14,7 +14,7 @@
   },
   "version": "1.0.0",
   "description": "a maze generator",
-  "name": "Maze Generator",
+  "name": "Maze-generator",
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
