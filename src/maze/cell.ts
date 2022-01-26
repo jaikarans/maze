@@ -3,7 +3,7 @@
  * and height.
  * @properties (top, right, bottom, left) tells if Cell is open from that side.
  * @property (x,y) represent the top-left coordinate of the Cell.
- * @property lenghtX, h is width and height of the Cell.
+ * @property w, h is width and height of the Cell.
  */
 export class Cell {
 	x:number;
@@ -17,9 +17,10 @@ export class Cell {
 	bottom:boolean = false;
 	left:boolean = false;
 
+	// if cell is visited
 	visited:boolean = false;
 
-	neighbors:Cell[]= new Array()	;
+	neighbors:Cell[]= new Array();
 	
 	/**
 	 * @param x x coordinate of top-left point of the Cell.
