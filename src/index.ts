@@ -3,7 +3,7 @@ import { pathSearch, backtrace } from "./maze/findPath";
 import { Maze } from "./maze/maze";
 import { Cell } from "./maze/cell";
 import { drawCellNum } from "./util/drawCellNum";
-import { goBottom, goLeft, goRight, goUp } from "./util/moves";
+import { goDown, goLeft, goRight, goUp } from "./util/moves";
 
 var canvas:HTMLCanvasElement = createCanvas(500,500);
 
@@ -11,6 +11,10 @@ var maze:Maze = new Maze(canvas, 'red', 15, 15, 500/15, 500/15);
 // var initialCell:Cell = maze.cells[0][0];
 // var destinationCell:Cell = maze.cells[maze.row-1][maze.column-1];
 var cell = {
+	stopLeftMove:true,
+	stopRightMove:true,
+	stopUpMove:true,
+	stopDownMove:true,
 	initial:maze.cells[0][0],
 	current:maze.cells[0][0],
 	destination:maze.cells[maze.row-1][maze.column-1]
@@ -68,21 +72,37 @@ function handleTouchMove(evt:any) {
         if ( xDiff > 0 ) {
             /* left swipe */
 						console.log('left swap');
+						cell.stopUpMove = true;
+						cell.stopRightMove = true;
+						cell.stopDownMove = true;
+						cell.stopLeftMove = false;
 						goLeft(cell, maze);
         } else {
             /* right swipe */
 						console.log('right swap');
+						cell.stopUpMove = true;
+						cell.stopRightMove = false;
+						cell.stopDownMove = true;
+						cell.stopLeftMove = true;
 						goRight(cell, maze);
         }
     } else {
         if ( yDiff > 0 ) {
             /* up swipe */
 						console.log('up swap');
+						cell.stopUpMove = false;
+						cell.stopRightMove = true;
+						cell.stopDownMove = true;
+						cell.stopLeftMove = true;
 						goUp(cell, maze);
         } else { 
             /* down swipe */
 						console.log('down swap');
-						goBottom(cell, maze);
+						cell.stopUpMove = true;
+						cell.stopRightMove = true;
+						cell.stopDownMove = false;
+						cell.stopLeftMove = true;
+						goDown(cell, maze);
         }
     }
     /* reset values */
