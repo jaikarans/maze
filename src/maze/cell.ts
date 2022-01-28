@@ -20,6 +20,13 @@ export class Cell {
 	// if cell is visited
 	visited:boolean = false;
 
+	// tells if cell is alredy traversed or not
+	traversed:boolean = false;
+	
+	// cell number in the path
+	cellNum:number = -1;
+	cellMarked:boolean = false;
+
 	neighbors:Cell[]= new Array();
 	
 	/**
@@ -73,5 +80,54 @@ export class Cell {
 		return false;
 	}
 
+	hasPathWith(c:Cell):boolean { 
+		if (this.isTopCell(c) && this.top == true && c.bottom == true){
+			return true;
+		}
+		else if (this.isRightCell(c) && this.right == true && c.left == true){
+			return true;
+		}
+		else if (this.isBottomCell(c) && this.bottom == true && c.top == true){
+			return true;
+		}
+		else if (this.isLeftCell(c) && this.left == true && c.right == true){
+			return true;
+		}
+		return false;
+	}
+
+	draw(ctx:CanvasRenderingContext2D) {
+		// this.markCell(c, ctx);
+		if (!this.top) {
+			ctx.beginPath();
+			ctx.moveTo(this.x * this.w      , this.y * this.h);
+			ctx.lineTo((this.x + 1) * this.w, this.y * this.h);
+			ctx.stroke();
+			ctx.closePath();
+		}
+		if (!this.right) {
+			ctx.beginPath();
+			ctx.moveTo((this.x + 1) * this.w, this.y * this.h);
+			ctx.lineTo((this.x + 1) * this.w, (this.y + 1) * this.h);
+			ctx.stroke();
+			ctx.closePath();
+		}
+		if (!this.bottom) {
+			ctx.beginPath();
+			ctx.moveTo((this.x + 1) * this.w, (this.y + 1) * this.h);
+			ctx.lineTo(this.x * this.w 			, (this.y + 1)* this.h);
+			ctx.stroke();
+			ctx.closePath();
+		}
+		if (!this.left) {
+			ctx.beginPath();
+			ctx.moveTo(this.x * this.w, (this.y + 1)* this.h);
+			ctx.lineTo(this.x * this.w, this.y * this.h);
+			ctx.stroke();
+			ctx.closePath();
+		}
+
+	}
+	
 
 }

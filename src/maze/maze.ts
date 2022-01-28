@@ -45,7 +45,10 @@ export class Maze {
 		this.ctx.fillStyle = colorCell;
 
 		this.generateCells();
-		// this.mapNeighborCells();
+		this.mapNeighborCells();
+		this.createMaze();
+		this.draw(this.ctx);
+
 	}
 
 	/**
@@ -97,48 +100,17 @@ export class Maze {
 	 * draw the whole maze
 	 * @param ctx canvas context in which we want to draw
 	 */
-	drawMaze(ctx:CanvasRenderingContext2D):void {
+	draw(ctx:CanvasRenderingContext2D):void {
 		// Erase the canvas before drawing anything on it.
 		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		this.cells.forEach((rowCells:Cell[]) => {
 			rowCells.forEach((cell) => {
-				this.drawCell(cell, ctx);
+				cell.draw(ctx);
 			});
 		});
 	}
 
-	drawCell(c:Cell, ctx:CanvasRenderingContext2D) {
-		// this.markCell(c, ctx);
-		if (!c.top) {
-			ctx.beginPath();
-			ctx.moveTo(c.x * c.w      , c.y * c.h);
-			ctx.lineTo((c.x + 1) * c.w, c.y * c.h);
-			ctx.stroke();
-			ctx.closePath();
-		}
-		if (!c.right) {
-			ctx.beginPath();
-			ctx.moveTo((c.x + 1) * c.w, c.y * c.h);
-			ctx.lineTo((c.x + 1) * c.w, (c.y + 1) * c.h);
-			ctx.stroke();
-			ctx.closePath();
-		}
-		if (!c.bottom) {
-			ctx.beginPath();
-			ctx.moveTo((c.x + 1) * c.w, (c.y + 1) * c.h);
-			ctx.lineTo(c.x * c.w 			, (c.y + 1)* c.h);
-			ctx.stroke();
-			ctx.closePath();
-		}
-		if (!c.left) {
-			ctx.beginPath();
-			ctx.moveTo(c.x * c.w, (c.y + 1)* c.h);
-			ctx.lineTo(c.x * c.w, c.y * c.h);
-			ctx.stroke();
-			ctx.closePath();
-		}
-
-	}
+	
 
 	/**
 	 * 
@@ -171,7 +143,7 @@ export class Maze {
 	/**
 	 * Maze generating algorithm
 	 */
-	async createMaze() {
+	createMaze() {
 
 		let ctx = this.canvas.getContext('2d')!;
 		// current cell is blue
@@ -185,13 +157,11 @@ export class Maze {
 
 		// 2. while stack is not empty
 		while (cellStack.length > 0) {
-			this.drawMaze(this.ctx);
-			console.log('hi');
 			
 			// 1. pop a cell from stack and make it current stack;
 			let current:Cell = cellStack.pop();
 			this.markCell(current, ctx, true);
-			await sleep(1);
+			// await sleep(1);
 
 			// get neighbor of the current cell which are not visited
 			let neighbors:any = this.getNeighbor(current).filter((c:Cell) => {
