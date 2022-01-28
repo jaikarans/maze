@@ -112,33 +112,6 @@ export class Maze {
 
 	
 
-	/**
-	 * 
-	 * mark a cell by drawing a small rect in it.
-	 * 
-	 */
-	markCell(cell:Cell, ctx:CanvasRenderingContext2D, isCurrentCell:boolean = false):void {
-		let x = cell.x * cell.w;
-		let y = cell.y * cell.h;
-		if (isCurrentCell) {
-			let temp:any = ctx.fillStyle;
-			ctx.fillStyle = this.colorCurrent;
-			ctx.fillRect(x+cell.w/4, y+cell.h/4, cell.w/2, cell.h/2);
-			ctx.fillStyle = temp;
-		}
-		else if (cell.visited) {
-			let temp:any = ctx.fillStyle;
-			ctx.fillStyle = this.colorVisited;
-			ctx.fillRect(x+cell.w/4, y+cell.h/4, cell.w/2, cell.h/2);
-			ctx.fillStyle = temp;
-		}
-		// else {
-		// 	let temp = ctx.fillStyle;
-		// 	ctx.fillStyle = this.colorCell;
-		// 	ctx.fillRect(x+cell.w/4, y+cell.h/4, cell.w/2, cell.h/2);
-		// 	ctx.fillStyle = temp;
-		// }
-	}
 
 	/**
 	 * Maze generating algorithm
@@ -160,7 +133,7 @@ export class Maze {
 			
 			// 1. pop a cell from stack and make it current stack;
 			let current:Cell = cellStack.pop();
-			this.markCell(current, ctx, true);
+			current.mark(this, true);
 			// await sleep(1);
 
 			// get neighbor of the current cell which are not visited

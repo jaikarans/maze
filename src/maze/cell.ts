@@ -1,3 +1,5 @@
+import { Maze } from "./maze";
+
 /**
  * @class Cell represent a box or cell in canvas of some width
  * and height.
@@ -129,5 +131,33 @@ export class Cell {
 
 	}
 	
-
+	/**
+	 * 
+	 * mark a cell by drawing a small rect in it.
+	 * 
+	 */
+	mark(maze:Maze, isCurrentCell:boolean = false):void {
+		let x = this.x * this.w;
+		let y = this.y * this.h;
+		let ctx = maze.ctx;
+		if (isCurrentCell) {
+			let temp:any = ctx.fillStyle;
+			ctx.fillStyle = maze.colorCurrent;
+			ctx.fillRect(x+this.w/4, y+this.h/4, this.w/2, this.h/2);
+			ctx.fillStyle = temp;
+		}
+		else if (this.visited) {
+			let temp:any = ctx.fillStyle;
+			ctx.fillStyle = maze.colorVisited;
+			ctx.fillRect(x+this.w/4, y+this.h/4, this.w/2, this.h/2);
+			ctx.fillStyle = temp;
+		}
+		// else {
+		// 	let temp = ctx.fillStyle;
+		// 	ctx.fillStyle = this.colorCell;
+		// 	ctx.fillRect(x+cell.w/4, y+cell.h/4, cell.w/2, cell.h/2);
+		// 	ctx.fillStyle = temp;
+		// }
+		}
+	
 }
